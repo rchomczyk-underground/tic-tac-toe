@@ -19,19 +19,28 @@ function resolveCurrentSymbol() {
 }
 
 function resolveAndForwardSymbol() {
-  const resolvedSymbol = ((currentPlayerSymbol === "X")
+  const previousSymbol = currentPlayerSymbol;
+  const oppositeSymbol = ((currentPlayerSymbol === "X")
       ? currentPlayerSymbol = "O"
       : currentPlayerSymbol = "X");
 
   const currentNode = document.getElementById(
-      `game-queue-hint-symbol-${currentPlayerSymbol === "O" ? "x" : "o"}`);
+      `game-queue-hint-symbol-${previousSymbol.toLowerCase()}`);
   const negatedNode = document.getElementById(
-      `game-queue-hint-symbol-${resolvedSymbol.toLowerCase()}`);
+      `game-queue-hint-symbol-${oppositeSymbol.toLowerCase()}`);
 
   currentNode.classList.add("game-queue-hint-symbol-active");
   negatedNode.classList.remove("game-queue-hint-symbol-active");
 
-  return resolvedSymbol;
+  return oppositeSymbol;
+}
+
+function removeSymbolHighlight() {
+  const hintedNode = document.getElementById(`game-queue-hint-symbol-${currentPlayerSymbol === "X" ? "o" : "x"}`);
+  const hintedNodeClasses = hintedNode.classList;
+  if (hintedNodeClasses.contains("game-queue-hint-symbol-active")) {
+    hintedNodeClasses.remove("game-queue-hint-symbol-active");
+  }
 }
 
 function resolveMovesOf(symbol) {
@@ -56,11 +65,11 @@ function handleInteraction(index) {
     makeNodeContext("game-result", "The game ended, and the winner is ")
     makeNodeContext("game-result-symbol", resolveCurrentSymbol());
     makeNodeVisible("game-result-parent");
-  } else {
-    if (measuredMoves.length === 9) {
-      makeNodeContext("game-result", "The game ended in a draw.")
-      makeNodeVisible("game-result-parent");
-    }
+    removeSymbolHighlight();
+  } else if (measuredMoves.length === 9) {
+    makeNodeContext("game-result", "The game ended in a draw.")
+    makeNodeVisible("game-result-parent");
+    removeSymbolHighlight();
   }
 }
 
