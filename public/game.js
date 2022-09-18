@@ -62,10 +62,6 @@ function handleInteraction(index) {
 
   handleMarking(node, index, resolveAndForwardSymbol());
 
-  if (resolveCurrentSymbol() === "X") {
-    handleInteraction(findAnyPossibleMove(findAnyPossibleVariant()));
-  }
-
   if (isGoalAchieved()) {
     makeNodeContext("game-result",
         "The game ended, and the winner is ")
@@ -77,6 +73,18 @@ function handleInteraction(index) {
     makeNodeVisible("game-result-parent");
     removeSymbolHighlight();
   }
+
+  setTimeout(() => {
+    if (resolveCurrentSymbol() === "X") {
+      handleInteraction(findAnyPossibleMove(findAnyPossibleVariant()));
+    }
+  }, getDelayBeforeMovement());
+}
+
+function getDelayBeforeMovement() {
+  const maximalTimeout = 1500;
+  const minimalTimeout = 250;
+  return Math.floor(Math.random() * (maximalTimeout - minimalTimeout) + minimalTimeout) + 1;
 }
 
 function handleMarking(node, index, symbol) {
@@ -92,7 +100,11 @@ function createAndReceiveField(index) {
   const node = document.createElement("div");
   node.className = "game-board-field";
   node.setAttribute("data-field-index", index);
-  node.addEventListener("click", () => handleInteraction(index));
+  node.addEventListener("click", () => {
+    if (resolveCurrentSymbol() === "O") {
+      handleInteraction(index);
+    }
+  });
   return node;
 }
 
