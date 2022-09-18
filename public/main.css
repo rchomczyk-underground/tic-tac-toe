@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.game-title {
+  letter-spacing: 2px;
+}
+
+.game-container {
+  height: 100vh;
+  width:  100%;
+  display: flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+}
+
+#game-board {
+  display: grid;
+  gap:     1px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.game-board-field {
+  border: black solid 2px;
+  height: 96px;
+  width:  96px;
+  margin: 1px;
+}
+
+.game-board-field:hover {
+  cursor: pointer;
+}
+
+.game-board-field {
+  display: flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+}
+
+.game-board-field-mark {
+  font-weight: bolder;
+  font-size: 32px;
+}
+
+.display-none {
+  display: none;
+}
