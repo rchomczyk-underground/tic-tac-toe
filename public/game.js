@@ -10,9 +10,8 @@ function populateBoardWithFields(board) {
   }
 }
 
-const measuredMoves  = [];
-
-let currentPlayerSymbol = "O";
+const measuredMoves      = [];
+let currentPlayerSymbol  = "O";
 let currentImmunityState = false;
 
 function resolveCurrentSymbol() {
