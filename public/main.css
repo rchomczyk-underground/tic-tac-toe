@@ -46,6 +46,36 @@ html, body {
   font-size: 32px;
 }
 
+#game-result-parent {
+  margin-top: 10px;
+}
+
+.game-queue-hint {
+  width: 308px;
+  text-align:  right;
+  font-weight: bolder;
+  font-size: 16px;
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 5px 0;
+}
+
+#game-queue-hint-symbol-x,
+#game-queue-hint-symbol-o,
+.game-queue-hint-separator {
+  text-align:  center;
+  width: 16px;
+}
+
+.game-queue-hint-separator {
+  font-weight: normal;
+}
+
+.game-queue-hint-symbol-active {
+  border: lightslategray 2px solid;
+  border-radius: 20px;
+}
+
 .display-none {
   display: none;
 }

@@ -19,9 +19,19 @@ function resolveCurrentSymbol() {
 }
 
 function resolveAndForwardSymbol() {
-  return ((currentPlayerSymbol === "X")
+  const resolvedSymbol = ((currentPlayerSymbol === "X")
       ? currentPlayerSymbol = "O"
       : currentPlayerSymbol = "X");
+
+  const currentNode = document.getElementById(
+      `game-queue-hint-symbol-${currentPlayerSymbol === "O" ? "x" : "o"}`);
+  const negatedNode = document.getElementById(
+      `game-queue-hint-symbol-${resolvedSymbol.toLowerCase()}`);
+
+  currentNode.classList.add("game-queue-hint-symbol-active");
+  negatedNode.classList.remove("game-queue-hint-symbol-active");
+
+  return resolvedSymbol;
 }
 
 function resolveMovesOf(symbol) {
