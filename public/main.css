@@ -2,6 +2,7 @@
 
 html, body {
   font-family: 'Montserrat', sans-serif;
+  margin: 0;
 }
 
 .game-title {
@@ -19,7 +20,7 @@ html, body {
 
 #game-board {
   display: grid;
-  gap:     1px;
+  gap:     2px;
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -27,7 +28,7 @@ html, body {
   border: black solid 2px;
   height: 96px;
   width:  96px;
-  margin: 1px;
+  padding: 1px;
 }
 
 .game-board-field:hover {
@@ -47,7 +48,9 @@ html, body {
 }
 
 #game-result-parent {
-  margin-top: 10px;
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-color: lightslategray;
 }
 
 .game-queue-hint {
@@ -57,7 +60,7 @@ html, body {
   font-size: 16px;
   display: flex;
   flex-direction: row-reverse;
-  margin: 5px 0;
+  padding: 5px 0;
 }
 
 #game-queue-hint-symbol-x,
@@ -74,6 +77,15 @@ html, body {
 .game-queue-hint-symbol-active {
   border: lightslategray 2px solid;
   border-radius: 20px;
+}
+
+.game-source-note {
+  position: absolute;
+  bottom:   0;
+}
+
+.game-source-note a {
+  text-decoration: none;
 }
 
 .display-none {
