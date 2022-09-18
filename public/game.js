@@ -36,7 +36,8 @@ function resolveAndForwardSymbol() {
 }
 
 function removeSymbolHighlight() {
-  const hintedNode = document.getElementById(`game-queue-hint-symbol-${currentPlayerSymbol === "X" ? "o" : "x"}`);
+  const hintedNode = document.getElementById(
+      `game-queue-hint-symbol-${resolveCurrentSymbol() === "X" ? "o" : "x"}`);
   const hintedNodeClasses = hintedNode.classList;
   if (hintedNodeClasses.contains("game-queue-hint-symbol-active")) {
     hintedNodeClasses.remove("game-queue-hint-symbol-active");
@@ -61,8 +62,13 @@ function handleInteraction(index) {
 
   handleMarking(node, index, resolveAndForwardSymbol());
 
+  if (resolveCurrentSymbol() === "X") {
+    handleInteraction(findAnyPossibleMove(findAnyPossibleVariant()));
+  }
+
   if (isGoalAchieved()) {
-    makeNodeContext("game-result", "The game ended, and the winner is ")
+    makeNodeContext("game-result",
+        "The game ended, and the winner is ")
     makeNodeContext("game-result-symbol", resolveCurrentSymbol());
     makeNodeVisible("game-result-parent");
     removeSymbolHighlight();
@@ -108,6 +114,48 @@ const variants = [
   [ 6, 4, 2 ]
 ];
 
+function findAnyPossibleVariant() {
+  const measuredIndexesMulti = measuredMoves
+    .map(move => move.index);
+  const measuredIndexesSingle = measuredMoves
+    .filter(move => move.symbol === "X")
+    .map(move => move.index);
+
+  for (const variant of variants) {
+    if (measuredIndexesSingle.includes(variant[0]) ||
+        measuredIndexesSingle.includes(variant[1]) ||
+        measuredIndexesSingle.includes(variant[2])) {
+      continue;
+    }
+
+    return variant;
+  }
+
+  return [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+    .filter(index => measuredIndexesMulti
+      .filter(comparedIndex => index === comparedIndex)
+      .length === 0);
+}
+
+function findAnyPossibleMove(trackedVariant) {
+  if (trackedVariant && trackedVariant.length > 0) {
+    let foundMove = getMoveAccordingTo(trackedVariant);
+    while (measuredMoves
+      .map(move => move.index)
+      .filter(move => foundMove === move)
+      .length > 0) {
+      foundMove = getMoveAccordingTo(trackedVariant)
+    }
+    return foundMove;
+  }
+
+  return 0;
+}
+
+function getMoveAccordingTo(variant) {
+  return variant[Math.floor(Math.random() * variant.length)];
+}
+
 function isGoalAchieved() {
   const indexes = resolveMovesOf(resolveCurrentSymbol());
   for (const variant of variants) {
@@ -129,10 +177,9 @@ function isGoalAchieved() {
 
 function makeNodeVisible(nodeId) {
   const node = document.getElementById(nodeId);
-
-  const classes = node.classList;
-  if (classes.contains("display-none")) {
-      classes.remove("display-none");
+  const nodeClasses = node.classList;
+  if (nodeClasses.contains("display-none")) {
+      nodeClasses.remove("display-none");
   }
 
   currentImmunityState = true;
