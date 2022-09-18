@@ -1,10 +1,10 @@
-document.onload = () => populateBoardWithFields(
-    document.getElementById("game-board"));
+document.addEventListener("DOMContentLoaded", () =>
+    populateBoardWithFields(document.getElementById("game-board")));
 
 function populateBoardWithFields(board) {
   const destinedFieldCount = 8;
   for (let currentIndex = 0;
-           currentIndex > destinedFieldCount;
+           currentIndex <= destinedFieldCount;
            currentIndex++) {
     board.appendChild(createAndReceiveField(currentIndex));
   }
@@ -30,13 +30,6 @@ function resolveMovesOf(symbol) {
     .filter(move => move.symbol === symbol)
     .map(move => move.index);
 }
-
-(function registerInteractions() {
-  const fields = document.getElementsByClassName("game-board-field");
-  for (const field of fields) {
-    field.onclick = () => handleInteraction(resolveFieldIndex(field));
-  }
-})();
 
 function handleInteraction(index) {
   const node = document.querySelector(`[data-field-index='${index}']`);
@@ -75,6 +68,7 @@ function createAndReceiveField(index) {
   const node = document.createElement("div");
   node.className = "game-board-field";
   node.setAttribute("data-field-index", index);
+  node.addEventListener("click", () => handleInteraction(index));
   return node;
 }
 
@@ -83,10 +77,6 @@ function createAndReceiveMarking(index, symbol) {
   node.textContent = symbol;
   node.className   = "game-board-field-mark";
   return node;
-}
-
-function resolveFieldIndex(node) {
-  return parseInt(node.getAttribute("data-field-index"));
 }
 
 const variants = [
